@@ -1,0 +1,9 @@
+1. Write an implement a program to reverse teh given string using a Stack.
+2. implement a Stack using a linked list to keep student's details such as name, reg no, age, etc
+3. implement a program to convert the given infix expression to a postfix expression
+4. implement a program to evaluate infix expressions
+5. implement a data structure to keep student's details in the same order of their admission,
+   with provision to add and remove in the same of their entry in the list
+6. implement a data structure to keep sales details in the order of their entry.
+   The number of entries is unknown and dynamically changing.
+7. Implement a circular queue

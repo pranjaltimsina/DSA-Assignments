@@ -1,0 +1,6 @@
+[X] 1. Write a program to reverse the given array.
+[X] 2. Write a program to rotate the elements of an array by d elements.
+[X] 3. Given two strings s1 and s2, find if s1 is a substring of s2. If yes, return the index of the first occurrence, else return -1.
+[ ] 4. Write a program to insert an element in an array at a specified location.
+[X] 5. Write a program to find the median of two arrays of the same size. (Use bubble sort)
+[X] 6. Write a program to print all the repeated numbers in an array with frequency.

@@ -1,0 +1,8 @@
+1. Binary Search: Implement a program to search and find student details in an efficient matter.
+Reduce the number of comparisions as much as possible. Use student's reg no as the key (int).
+Store student name, reg no, CGPA in the list of student's details
+
+2. Binary Search Application: Implement a program to find the square root of a number.
+User can give the number randomly. Floor the result in case of floating point.
+
+3. Bubble Sort

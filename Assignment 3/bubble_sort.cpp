@@ -1,7 +1,10 @@
 #include <iostream>
+#include <chrono>
+
+int comparisons{0}, array_access{0};
 
 void bubble_sort(int *numbers, int size) {
-    int temp, comparisons{0}, key, array_access{0};
+    int temp, key;
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size -1; j++) {
@@ -15,26 +18,31 @@ void bubble_sort(int *numbers, int size) {
             }
         }
     }
-    std::cout << comparisons << " comparisons were made and the array was accessed " << array_access << " times.\n";
 }
 
 int main() {
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+
+
     int size, *numbers;
-    std::cout << "Enter number of elements: ";
     std::cin >> size;
 
     numbers = new int[size];
-
-    std::cout << "Enter numbers seperated by spaces\n";
 
     for (int i = 0; i < size; i++) {
         std::cin >> numbers[i];
     }
 
-    bubble_sort(numbers, size);
 
-    std::cout << "The sorted array is:\n";
-    for (int i = 0; i < size; i++) {
-        std::cout << numbers[i] << " ";
-    }
+    auto t1 = high_resolution_clock::now();
+        bubble_sort(numbers, size);
+    auto t2 = high_resolution_clock::now();
+
+    duration<double, std::milli> ms_double = t2 - t1;
+
+    std::cout << "Time taken: " << ms_double.count() << "ms";
+    std::cout << " | Array accesses: " << array_access << " | Comparisons: " << comparisons << "\n";
 }

@@ -1,7 +1,9 @@
 #include <iostream>
+#include <chrono>
+
+int comparisons{0}, array_access{0};
 
 void selection_sort(int *numbers, int size) {
-    int comparisons{0}, array_access{0};
     for (int i = 0; i < size; i++) {
         int key = i;
         for (int j = i+1; j < size; j++) {
@@ -14,26 +16,29 @@ void selection_sort(int *numbers, int size) {
         numbers[i] = temp;
         array_access += 3;
     }
-    std::cout << array_access << " array accesses and " << comparisons << " comparisons\n";
 }
 
 int main() {
-    int size, *numbers;
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
 
-    std::cout << "Enter number of elements: ";
+    int size, *numbers;
     std::cin >> size;
 
     numbers = new int[size];
-
-    std::cout << "Enter elements seperated by spaces:\n";
 
     for (int i = 0; i < size; i++) {
         std::cin >> numbers[i];
     }
 
+    auto t1 = high_resolution_clock::now();
     selection_sort(numbers, size);
-    std::cout << "Sorted array:\n";
-    for (int i = 0 ; i < size; i++) {
-        std::cout << numbers[i] << " ";
-    }
+    auto t2 = high_resolution_clock::now();
+
+    duration<double, std::milli> ms_double = t2 - t1;
+
+    std::cout << "Time taken: " << ms_double.count() << "ms";
+    std::cout << " | Array accesses: " << array_access << " | Comparisons: " << comparisons << "\n";
 }

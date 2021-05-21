@@ -164,25 +164,53 @@ public:
 
     void search(int x) {
         // search from tree
-        root = find(root, x);
+        node* result = find(root, x);
+        if (result == NULL) {
+            cout << "Not found!\n";
+        } else {
+            cout << "Found\n";
+        }
     }
 };
 
+void menu() {
+    cout << "1. Insert 2. Remove 3. Find 4. Display 0. Exit" << endl;
+}
+
+
 int main() {
     BST t;
-    t.insert(20);
-    t.insert(25);
-    t.insert(15);
-    t.insert(10);
-    t.insert(30);
-    // t.display();
-    // t.remove(20);
-    // t.display();
-    // t.remove(25);
-    // t.display();
-    // t.remove(30);
-    // t.display();
+    int choice;
+    while (true) {
+        // main driver code for getting user input
+        // and handling different choices
+        menu();
+        cin >> choice;
 
-    std::cout << t.findMin(t.root)->data;
+        if (!choice) {
+            // exit
+            return 0;
+        } else if (choice == 4) {
+            // display tree (inorder traversal)
+            t.display();
+            continue;
+        }
+        else {
+            int query;
+            cout << "Enter data: ";
+            cin >> query;
+            switch (choice) {
+                case 1:
+                    t.insert(query);
+                    break;
+                case 2:
+                    t.remove(query);
+                    break;
+                case 3:
+                    t.search(query);
+                    break;
+            }
+        }
+    }
     return 0;
 }

@@ -1,3 +1,5 @@
+// Exp4A: Insert, delete and search in binary trees
+// Author: Pranjal Timsina
 #include<iostream>
 
 using namespace std;

@@ -1,3 +1,6 @@
+// Exp 4CD: Expression trees traversal
+// Author: Pranjal Timsina; 20BDS0392
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -31,6 +34,7 @@ void push(std::string data) {
     stack[++top] = data;
 }
 
+// A class to store data
 class node {
     public:
     std::string data;
@@ -38,6 +42,7 @@ class node {
     node* right;
 };
 
+// a factory: to create nodes with a data
 node* node_factory(std::string data) {
     node* new_node = new node;
     new_node->left = NULL;
@@ -46,15 +51,20 @@ node* node_factory(std::string data) {
     return new_node;
 }
 
+// left parenthesis returns -1
+// right parenthesis returns 1
+// else returns 0
 int parentheses(std::string a) {
     std::string left[3] = {"[", "{", "("};
     std::string right[3] = {"]", "}", ")"};
-    for (auto ob: left) {
+
+    for (std::string ob: left) {
         if (a == ob) {
             return -1;
         }
     }
-    for (auto ob: right) {
+
+    for (std::string ob: right) {
         if (a == ob) {
             return 1;
         }
@@ -62,6 +72,7 @@ int parentheses(std::string a) {
     return 0;
 }
 
+// returns true operator is passed
 bool isoperator(std::string character) {
     // just a simple function to check whether character is
     // an operator or not
@@ -75,6 +86,7 @@ bool isoperator(std::string character) {
     return false;
 }
 
+// returns the precedence of an operator
 int operator_precedence(std::string op) {
     if (!isoperator(op)) {
         return 0;
@@ -87,7 +99,8 @@ int operator_precedence(std::string op) {
         return 3;
 }
 
-
+// takes a single string and returns a vector of
+// tokens ie. a+b -> [a, +, b]
 std::vector<std::string> tokenize(std::string infix) {
     // to tokenized string, which is initially empty
     std::vector<std::string> tokenized;
@@ -182,6 +195,55 @@ node* tree_factory(std::vector<std::string> postfix) {
 
     return temp;
 }
+node* real_tree_factory(std::vector<std::string> infix) {
+    std::stack<node*> staccNodes;
+    std::stack<std::string> staccTokens;
+
+    node *t, *t1, *t2;
+
+    for (std::string c: infix) {
+        if (parentheses(c) == -1) {
+            staccTokens.push(c);
+        } else if (!isoperator(c)) {
+            t = node_factory(c);
+            staccNodes.push(t);
+        } else if (operator_precedence(c) > 0) {
+            while (
+                !staccTokens.empty() && staccTokens.top() != "("
+                && ((c != "^" && operator_precedence(staccTokens.top()) >= operator_precedence(c))
+                || (c == "^" &&
+                        operator_precedence(staccTokens.top()) > operator_precedence(c)
+                ))
+            ) {
+                t = node_factory(staccTokens.top());
+                staccTokens.pop();
+                t1 = staccNodes.top();
+                staccNodes.pop();
+                t2 = staccNodes.top();
+                staccNodes.pop();
+
+                t->left = t2;
+                t->right = t1;
+                staccNodes.push(t);
+            }
+        } else if (c == ")") {
+            while (!staccTokens.empty() && staccTokens.top() != "(") {
+                t = node_factory(staccTokens.top());
+                staccTokens.pop();
+                t1 = staccNodes.top();
+                staccNodes.pop();
+                t2 = staccNodes.top();
+                staccNodes.pop();
+                t->left = t2;
+                t->right = t1;
+                staccNodes.push(t);
+            }
+            staccTokens.pop();
+        }
+    }
+    t = staccNodes.top();
+    return t;
+}
 
 void inorder_traverse(node* root) {
     if (root != NULL) {
@@ -216,11 +278,18 @@ int main() {
     std::vector<std::string> tokenized = tokenize(infix);
     std::vector<std::string> postfix = to_postfix(tokenized);
 
-    node* tree = tree_factory(postfix);
-    postorder_traverse(tree);
+    for (auto a: tokenized) {
+        std::cout << a << " ";
+    }
     std::cout << "\n";
-    preorder_traverse(tree);
-    std::cout << "\n";
+
+    // node* tree = tree_factory(postfix);
+    node* tree = real_tree_factory(tokenized);
+    std::cout << "In Order: ";
     inorder_traverse(tree);
+    std::cout << "\nPostOrder: ";
+    postorder_traverse(tree);
+    std::cout << "\nPreOrder: ";
+    preorder_traverse(tree);
     return 0;
 }

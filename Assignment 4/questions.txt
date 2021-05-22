@@ -1,0 +1,10 @@
+1. Implement a program to construct a BST and perform insert, delete, and
+    search operations. Implement it using an array or a linked list
+
+2. Find the min and max of elements in BST
+
+3. Construct an expression tree from an infix expression
+
+4. Get the prefix or postfix form of expression from the
+    above expression tree by using pre-order traversal
+    and pre-order traversal respectively.

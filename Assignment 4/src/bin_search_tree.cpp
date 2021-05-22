@@ -1,3 +1,6 @@
+// Exp4A: Insert, delete and search in binary trees
+// Author: Pranjal Timsina
+
 #include<iostream>
 
 using namespace std;
@@ -14,18 +17,6 @@ public:
 
     // initialize the root of the BST
     node* root;
-
-    // recursively remove a node
-    node* makeEmpty(node* t) {
-        if(t == NULL)
-            return NULL;
-        {
-            makeEmpty(t->left);
-            makeEmpty(t->right);
-            delete t;
-        }
-        return NULL;
-    }
 
     // function to insert into the BST recursively
     node* insert(int x, node* t) {
@@ -139,11 +130,6 @@ public:
     BST() {
         // default constructor
         root = NULL;
-    }
-
-    ~BST() {
-        // destructor
-        root = makeEmpty(root);
     }
 
     void insert(int x) {

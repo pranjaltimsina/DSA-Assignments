@@ -40,7 +40,8 @@ class node {
 
 node* node_factory(std::string data) {
     node* new_node = new node;
-    new_node->left = new_node->right = NULL;
+    new_node->left = NULL;
+    new_node->right = NULL;
     new_node->data = data;
     return new_node;
 }
@@ -132,14 +133,14 @@ std::vector<std::string> to_postfix(std::vector<std::string> infix) {
                 push(temp);
             } else if (parentheses(current) == 1) {
                 while (peek() != "(") {
-                    postfix.push_back(pop() + " ");
+                    postfix.push_back(pop());
                 }
                 temp = pop();
             } else if (is_empty() || operator_precedence(current) > operator_precedence(peek())) {
                 push(temp);
             } else {
                 while (!is_empty() && (operator_precedence(current) <= operator_precedence(peek()))) {
-                    postfix.push_back(pop() + " ");
+                    postfix.push_back(pop());
                 }
                 push(temp);
             }
@@ -150,17 +151,23 @@ std::vector<std::string> to_postfix(std::vector<std::string> infix) {
 
 node* tree_factory(std::vector<std::string> postfix) {
     std::stack<node*> stacc;
-
+    std::stack<node*> stacc_operator;
     node *temp, *temp1, *temp2;
 
     for (std::string c: postfix) {
-        temp = node_factory(c);
+        // std::cout << "Working with " << c << "\n";
         if (!isoperator(c)) {
+            // std::cout << c << " is not an operator, pushing to stack\n";
+            temp = node_factory(c);
             stacc.push(temp);
         } else {
+            temp = node_factory(c);
+            // std::cout << c << " is an operator, pushing to stack\n";
             temp1 = stacc.top();
+            // std::cout << temp1->data<< " was popped from stack\n";
             stacc.pop();
             temp2 = stacc.top();
+            // std::cout << temp2->data<< " was popped from stack\n";
             stacc.pop();
 
             temp->right = temp1;
@@ -177,11 +184,26 @@ node* tree_factory(std::vector<std::string> postfix) {
 }
 
 void inorder_traverse(node* root) {
-    if (root) {
+    if (root != NULL) {
         inorder_traverse(root->left);
-        std::cout << "wtf";
         std::cout << root->data << " ";
         inorder_traverse(root->right);
+    }
+}
+
+void preorder_traverse(node* root) {
+    if (root != NULL) {
+        std::cout << root->data << " ";
+        preorder_traverse(root->left);
+        preorder_traverse(root->right);
+    }
+}
+
+void postorder_traverse(node* root) {
+    if (root != NULL) {
+        postorder_traverse(root->left);
+        postorder_traverse(root->right);
+        std::cout << root->data << " ";
     }
 }
 
@@ -195,6 +217,10 @@ int main() {
     std::vector<std::string> postfix = to_postfix(tokenized);
 
     node* tree = tree_factory(postfix);
+    postorder_traverse(tree);
+    std::cout << "\n";
+    preorder_traverse(tree);
+    std::cout << "\n";
     inorder_traverse(tree);
     return 0;
 }
